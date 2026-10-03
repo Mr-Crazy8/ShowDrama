@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: showdrama
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    env_file: ./backend/.env
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+
+  pipeline:
+    build: ./pipeline
+    ports:
+      - "8000:8000"
+    env_file: ./pipeline/.env
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./pipeline:/app
+      - pipeline_tmp:/tmp
+
+volumes:
+  postgres_data:
+  pipeline_tmp:
