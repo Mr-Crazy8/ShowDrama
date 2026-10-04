@@ -28,6 +28,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "showdrama"
+    "scheme": "showdrama",
+    "extra": {
+      "eas": {
+        "projectId": "cce38fee-17ff-461c-8daf-51e3dc7f6013"
+      }
+    }
   }
 }
